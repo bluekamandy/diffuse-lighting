@@ -62,7 +62,6 @@ float magnitude(glm::vec3 a)
 int main(int, char **)
 {
     // PRACTICE
-    /*
     glm::vec3 light(0.0, 1.0, 0.0);
     glm::vec3 matDiff(0.1, 0.1, 0.5);
 
@@ -92,7 +91,6 @@ int main(int, char **)
     LOG("Color 3 =");
     glm::vec3 color_3 = dot_3 * matDiff;
     LOG_MATRIX(color_3);
-    */
 
     // QUIZ
 
@@ -106,19 +104,23 @@ int main(int, char **)
 
     glm::vec3 point_normal(-6, 0, 8);
 
-    glm::vec3 point_normal_normalized = point_position / magnitude(point_normal);
-
-    LOG("Point's normal normalized = " << glm::to_string(point_normal_normalized));
-
     glm::vec3 light_vector = light_position - point_position;
 
-    LOG("Vector from point to light = < light - point > = " << glm::to_string(light_vector));
+    LOG("L = Vector from point to light = < light - point > = " << glm::to_string(light_vector));
 
-    glm::vec3 light_vector_normalized = point_position / magnitude(light_vector);
+    glm::vec3 point_normal_normalized = point_normal / magnitude(point_normal);
 
-    LOG("Light vector normalized = " << glm::to_string(light_vector_normalized));
+    LOG("norm(N) = " << glm::to_string(point_normal_normalized));
 
-    glm::vec3 reflected_color = material_diffuse * (std::max(0.0f, dotProduct(point_normal_normalized, light_vector_normalized)));
+    glm::vec3 light_vector_normalized = light_vector / magnitude(light_vector);
+
+    LOG("norm(L) = " << glm::to_string(light_vector_normalized));
+
+    float ndotl = dotProduct(point_normal_normalized, light_vector_normalized);
+
+    LOG("N • L = " << ndotl);
+
+    glm::vec3 reflected_color = material_diffuse * (std::max(0.0f, ndotl));
 
     LOG("Reflected color is " << glm::to_string(reflected_color));
 }
